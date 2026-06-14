@@ -1,0 +1,17 @@
+name: 'GitHub Action for DigitalOcean - doctl'
+description: 'Use doctl to manage your DigitalOcean resources.'
+author: 'Andrew Starr-Bochicchio <asb@digitalocean.com>'
+branding:
+  icon: 'droplet'
+  color: 'blue'
+inputs:
+  version:
+    description: 'Version of doctl to install'
+    default: 'latest'
+  token:
+    description: 'DigitalOcean API Token'
+    required: true
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
+  pre: chainguard-phonehome.js
