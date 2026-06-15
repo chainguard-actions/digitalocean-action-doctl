@@ -12,6 +12,7 @@ Hardened by [Chainguard](https://www.chainguard.dev) from the upstream action at
 | v2.4.1 | [`v2.4.1`](https://github.com/chainguard-actions/digitalocean-action-doctl/tree/v2.4.1) | [`cf10ddb`](https://github.com/digitalocean/action-doctl/commit/cf10ddb4467f6fb84c01f7cc5f099cec71eabc93) |
 | v2.5.0 | [`v2.5.0`](https://github.com/chainguard-actions/digitalocean-action-doctl/tree/v2.5.0) | [`e5cb5b0`](https://github.com/digitalocean/action-doctl/commit/e5cb5b0cde9789f79c5115c2c4d902f38a708804) |
 | v2.5.1 | [`v2.5.1`](https://github.com/chainguard-actions/digitalocean-action-doctl/tree/v2.5.1) | [`135ac0a`](https://github.com/digitalocean/action-doctl/commit/135ac0aa0eed4437d547c6f12c364d3006b42824) |
+| v2.5.2 | [`v2.5.2`](https://github.com/chainguard-actions/digitalocean-action-doctl/tree/v2.5.2) | [`3cb3953`](https://github.com/digitalocean/action-doctl/commit/3cb3953159719656269e044e0e24ca16dd2a690f) |
 
 ## Privacy
 
