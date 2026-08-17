@@ -1,0 +1,21 @@
+name: Test doctl install with no_auth
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          no_auth: 'true'
+      - name: Assert doctl is installed
+        run: |
+          echo "Checking doctl is available in PATH..."
+          if ! command -v doctl &> /dev/null; then
+            echo "FAIL: doctl not found in PATH"
+            exit 1
+          fi
+          echo "PASS: doctl is installed"
+          doctl version
