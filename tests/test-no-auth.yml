@@ -1,0 +1,39 @@
+name: Test no_auth mode
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          version: "1.104.0"
+          no_auth: "true"
+          token: ""
+      - name: Assert doctl is installed and functional without auth
+        run: |
+          echo "Checking doctl is on PATH..."
+          which doctl || { echo "FAIL: doctl not found on PATH"; exit 1; }
+          echo "PASS: doctl found"
+      - name: Assert doctl help works without auth
+        run: |
+          HELP_OUTPUT=$(doctl help 2>&1)
+          echo "help output: $HELP_OUTPUT"
+          if echo "$HELP_OUTPUT" | grep -qi "doctl"; then
+            echo "PASS: doctl help output looks valid"
+          else
+            echo "FAIL: unexpected help output: $HELP_OUTPUT"
+            exit 1
+          fi
+      - name: Assert doctl compute command is available
+        run: |
+          COMPUTE_OUTPUT=$(doctl compute --help 2>&1)
+          echo "compute help output: $COMPUTE_OUTPUT"
+          if echo "$COMPUTE_OUTPUT" | grep -qi "compute"; then
+            echo "PASS: doctl compute subcommand available"
+          else
+            echo "FAIL: doctl compute subcommand not available: $COMPUTE_OUTPUT"
+            exit 1
+          fi

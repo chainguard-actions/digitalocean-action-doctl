@@ -1,0 +1,29 @@
+name: Test latest version install
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          version: "latest"
+          no_auth: "true"
+          token: ""
+      - name: Assert doctl is installed
+        run: |
+          echo "Checking doctl is on PATH..."
+          which doctl || { echo "FAIL: doctl not found on PATH"; exit 1; }
+          echo "PASS: doctl found"
+      - name: Assert doctl responds to version command
+        run: |
+          VERSION_OUTPUT=$(doctl version 2>&1)
+          echo "version output: $VERSION_OUTPUT"
+          if echo "$VERSION_OUTPUT" | grep -qiE "doctl version [0-9]+\.[0-9]+\.[0-9]+"; then
+            echo "PASS: doctl version output looks valid"
+          else
+            echo "FAIL: unexpected version output: $VERSION_OUTPUT"
+            exit 1
+          fi
