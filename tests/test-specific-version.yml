@@ -1,0 +1,31 @@
+name: Test specific version install
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          version: '1.101.0'
+          no_auth: 'true'
+      - name: Assert doctl is installed
+        run: |
+          which doctl
+          if [ $? -ne 0 ]; then
+            echo "FAIL: doctl not found on PATH"
+            exit 1
+          fi
+          echo "PASS: doctl is installed"
+      - name: Assert correct version is installed
+        run: |
+          VERSION_OUTPUT=$(doctl version)
+          echo "version output: $VERSION_OUTPUT"
+          if echo "$VERSION_OUTPUT" | grep -q "1.101.0"; then
+            echo "PASS: correct version 1.101.0 is installed"
+          else
+            echo "FAIL: expected version 1.101.0 but got: $VERSION_OUTPUT"
+            exit 1
+          fi

@@ -1,0 +1,39 @@
+name: Test no_auth mode - skip authentication
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          version: latest
+          no_auth: 'true'
+          token: ''
+      - name: Assert doctl is installed without auth
+        run: |
+          which doctl
+          if [ $? -ne 0 ]; then
+            echo "FAIL: doctl not found on PATH"
+            exit 1
+          fi
+          echo "PASS: doctl is installed"
+      - name: Assert doctl version works without auth context
+        run: |
+          OUTPUT=$(doctl version 2>&1)
+          echo "output: $OUTPUT"
+          if [ $? -ne 0 ]; then
+            echo "FAIL: doctl version failed"
+            exit 1
+          fi
+          echo "PASS: doctl version works in no_auth mode"
+      - name: Assert doctl help works without auth
+        run: |
+          doctl help
+          if [ $? -ne 0 ]; then
+            echo "FAIL: doctl help failed"
+            exit 1
+          fi
+          echo "PASS: doctl help works without authentication"

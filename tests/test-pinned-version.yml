@@ -1,0 +1,28 @@
+name: Test doctl install with pinned version
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          version: '1.101.0'
+          no_auth: 'true'
+      - name: Assert doctl is installed at correct version
+        run: |
+          echo "Checking doctl is available in PATH..."
+          if ! command -v doctl &>/dev/null; then
+            echo "FAIL: doctl not found in PATH"
+            exit 1
+          fi
+          ACTUAL_VERSION=$(doctl version 2>&1 | head -1)
+          echo "actual version output: $ACTUAL_VERSION"
+          if echo "$ACTUAL_VERSION" | grep -q "1.101.0"; then
+            echo "PASS: doctl version 1.101.0 is installed"
+          else
+            echo "FAIL: expected version 1.101.0 but got: $ACTUAL_VERSION"
+            exit 1
+          fi
